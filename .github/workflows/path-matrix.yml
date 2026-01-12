@@ -1,0 +1,39 @@
+name: Path Based Matrix CI
+
+on:
+  push:
+    paths:
+      - "src/**"
+      - "!docs/**"
+  pull_request:
+    paths:
+      - "src/**"
+      - "!docs/**"
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node-version: [18, 20]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Print matrix information
+        run: |
+          echo "OS=${{ matrix.os }}"
+          echo "NODE=${{ matrix.node-version }}"
+
+      - name: Run tests
+        run: |
+          echo "Running tests"
+          echo "Tests passed"
+
